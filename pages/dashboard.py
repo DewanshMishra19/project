@@ -3,7 +3,27 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 from plotly.offline import offline, iplot
-st.markdown
+import streamlit as st
+
+
+def update_layout(title_font_size = 28, hover_font_size = 16, hover_bgcolor = "#45FFCA", showlegend = False):
+    fig1.update_layout(
+        showlegend = showlegend,
+        title = {
+            "font" : {
+                "size" :title_font_size,
+                "family" :"tahoma"
+            }
+        },
+        hoverlabel={
+            "bgcolor": hover_bgcolor,
+            "font_size": hover_font_size,
+            "font_family": "tahoma"
+        }
+    )
+
+df = pd.read_csv("dataset\movies.csv", encoding='latin1')
+
 fig1 = px.box(
     x =df["budget"], 
     labels= {"x": "Budget"},
@@ -20,6 +40,10 @@ fig1.update_layout(
 }
 )
 iplot(fig1)
+
+
+rating = df["rating"].value_counts()
+(rating / df.shape[0] * 100).apply(lambda x: f"{x: 0.2f} %")
 rating = rating[0:6]
 fig2 = px.bar(data_frame= rating, 
        x = rating.index, 
@@ -45,6 +69,9 @@ fig2.update_traces(
 )
 iplot(fig2)
 
+
+genre = df["genre"].value_counts()
+(genre / sum(genre) * 100).apply(lambda x: f"{x:0.2f} %")
 genre = genre.nlargest(10)[::-1]
 fig3 = px.bar(data_frame= genre, 
              orientation = "h",
@@ -71,6 +98,9 @@ update_layout()
 iplot(fig3)
 
 
+
+year = df["year"].value_counts().sort_index()
+year.head(10)
 fig4 = px.area(year, 
         x = year.index, 
         y =year, 
@@ -148,6 +178,9 @@ update_layout()
 
 iplot(fig5)
 
+
+director = df["director"].value_counts()
+director.head(10)
 director = director.nlargest(5)
 fig6 = px.bar(data_frame= director, 
        x = director.index, 
@@ -174,6 +207,8 @@ fig6.update_traces(
 iplot(fig6)
 
 
+movie_star = df["star"].value_counts()
+movie_star.head(10)
 movie_star = movie_star.nlargest(10)[::-1]
 fig7 = px.bar(data_frame= movie_star, 
              orientation = "h", 
@@ -200,6 +235,9 @@ fig7.update_traces(
 )
 iplot(fig7)
 
+
+country = df["country"].value_counts()
+country.nlargest(5)
 country = country.nlargest(5)[::-1]
 fig8 = px.bar(data_frame= country, 
              orientation = "h", 
@@ -228,6 +266,9 @@ fig8.update_traces(
 iplot(fig8)
 
 
+filt = df["score"].nlargest(10)
+top_rated_movie = df.loc[filt.index, ["name", "score"]]
+top_rated_movie.reset_index(drop=True)
 fig9 = px.scatter(top_rated_movie[::-1],  
                  y = "name", 
                  x = "score", 
@@ -252,7 +293,8 @@ fig9.update_traces(
 iplot(fig9)
 
 
-
+gross_per_year = df.groupby("year")["gross"].mean()
+gross_per_year.head(5)
 fig10 = px.area(gross_per_year, 
             x = gross_per_year.index, 
             y =gross_per_year, 
@@ -278,6 +320,9 @@ fig10.update_traces(
 iplot(fig10)
 
 
+gross_via_comapny = df.groupby("company")["gross"].mean().sort_values(ascending=False)
+gross_via_comapny = gross_via_comapny.head(10)
+pd.DataFrame(gross_via_comapny)
 fig11 = px.bar(
     data_frame= gross_via_comapny[::-1], 
     orientation = "h", 
@@ -305,7 +350,14 @@ fig11.update_traces(
 iplot(fig11)
 
 
+filt = (df["year"] >= 2010) & (df["year"] <= 2019)
+dff = df[filt].copy()
+year_vs_genre = dff.groupby("year", as_index=False)["genre"].value_counts()
+filt = year_vs_genre.groupby("year")["count"].nlargest(3).droplevel(0).index
 
+year_vs_genre = year_vs_genre.iloc[filt]
+year_vs_genre["year"] = year_vs_genre["year"].astype(str) 
+year_vs_genre.head(10)
 fig12 = px.bar(year_vs_genre,  
                  x = "year", 
                  y = "count", 
@@ -328,25 +380,6 @@ fig12.update_traces(
 )
 iplot(fig12)
 
-
-# Create The Plotly Heat Map
-fig13 = px.imshow(
-    df_corr.corr(numeric_only = True), 
-    text_auto="0.2f", aspect="auto", template="plotly_dark",
-    title="Correlation That Influence the Gross Revenue",
-    color_continuous_scale = "earth"
-) 
-
-update_layout(showlegend=True, hover_bgcolor="#222", hover_font_size=15)
-
-fig13.update_traces(
-    textfont = {
-        "family": "tahoma",
-         "size": 16,
-    },
-    hovertemplate= "Feature[1]: %{x}<br>Feature[2]: %{y}"
-)
-iplot(fig13)
 
 
 
