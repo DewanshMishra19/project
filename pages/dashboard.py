@@ -39,7 +39,7 @@ fig1.update_layout(
     }
 }
 )
-iplot(fig1)
+st.plotly_chart(fig1)
 
 
 rating = df["rating"].value_counts()
@@ -67,7 +67,7 @@ fig2.update_traces(
     },
     hovertemplate= "Rating: %{label}<br>Popularity: %{value:0.2f}%"
 )
-iplot(fig2)
+st.plotly_chart(fig2)
 
 
 genre = df["genre"].value_counts()
@@ -95,7 +95,7 @@ fig3.update_traces(
 
 update_layout()
 
-iplot(fig3)
+st.plotly_chart(fig3)
 
 
 
@@ -113,7 +113,7 @@ fig4 = px.area(year,
 
 
 update_layout()
-iplot(fig4)
+st.plotly_chart(fig4)
 
 fig5 = px.histogram(df["score"], 
                    template = "plotly_dark",
@@ -122,61 +122,61 @@ fig5 = px.histogram(df["score"],
                    title = "The Distribution of Scores",
                   )
 
-## ► Adding The Mean Line To The Histogram
-fig5.add_shape(type='line',
-              x0=df["score"].mean(),
-              y0=0,
-              x1=df["score"].mean(),
-              y1=df["score"].value_counts().max()+25,
-              line = {
-                  "color" :"#FF0060",
-                  "width" : 2,
-                  "dash" : "dashdot"
-              },
-              label={
-                  "text" : f"Mean: {df['score'].mean(): 0.1f}\t",
-                  "textposition": "end",
-                  "yanchor" :"top",
-                  "xanchor" :"right",
-                  "textangle" :0,
-                  "font": {
-                      "size": 14,
-                      "color" :"#FF0060",
-                      "family" : "tahoma"
+# ## ► Adding The Mean Line To The Histogram
+# fig5.add_shape(type='line',
+#               x0=df["score"].mean(),
+#               y0=0,
+#               x1=df["score"].mean(),
+#               y1=df["score"].value_counts().max()+25,
+#               line = {
+#                   "color" :"#FF0060",
+#                   "width" : 2,
+#                   "dash" : "dashdot"
+#               },
+#               label={
+#                   "text" : f"Mean: {df['score'].mean(): 0.1f}\t",
+#                   "textposition": "end",
+#                   "yanchor" :"top",
+#                   "xanchor" :"right",
+#                   "textangle" :0,
+#                   "font": {
+#                       "size": 14,
+#                       "color" :"#FF0060",
+#                       "family" : "tahoma"
                       
-                  },
-              }
-             )
+#                   },
+#               }
+#              )
 
-## ► Adding The Median Line To The Histogram
-fig5.add_shape(type='line',
-              x0=df["score"].median(),
-              y0=0,
-              x1=df["score"].median(),
-              y1=df["score"].value_counts().max()+25,
-              line = {
-                  "color" :"violet",
-                  "width" : 2,
-                  "dash" : "dashdot"
-              },
-              label={
-                  "text" :f"Median: {df['score'].median(): 0.1f}",
-                  "textposition": "end",
-                  "yanchor" :"top",
-                  "xanchor" :"left",
-                  "textangle" :0,
-                  "font": {
-                      "size": 14,
-                      "color" :"violet",
-                      "family" : "tahoma"
+# ## ► Adding The Median Line To The Histogram
+# fig5.add_shape(type='line',
+#               x0=df["score"].median(),
+#               y0=0,
+#               x1=df["score"].median(),
+#               y1=df["score"].value_counts().max()+25,
+#               line = {
+#                   "color" :"violet",
+#                   "width" : 2,
+#                   "dash" : "dashdot"
+#               },
+#               label={
+#                   "text" :f"Median: {df['score'].median(): 0.1f}",
+#                   "textposition": "end",
+#                   "yanchor" :"top",
+#                   "xanchor" :"left",
+#                   "textangle" :0,
+#                   "font": {
+#                       "size": 14,
+#                       "color" :"violet",
+#                       "family" : "tahoma"
                       
-                  },
-              }
-             )
+#                   },
+#               }
+#              )
 
-update_layout()
+# update_layout()
 
-iplot(fig5)
+# st.plotly_chart(fig5)
 
 
 director = df["director"].value_counts()
@@ -204,7 +204,7 @@ fig6.update_traces(
     },
     hovertemplate= "Director: %{label}<br>No. Movies: %{value}"
 )
-iplot(fig6)
+st.plotly_chart(fig6)
 
 
 movie_star = df["star"].value_counts()
@@ -233,7 +233,7 @@ fig7.update_traces(
     },
     hovertemplate= "Movie Star: %{label}<br>No. Movies: %{value}"
 )
-iplot(fig7)
+st.plotly_chart(fig7)
 
 
 country = df["country"].value_counts()
@@ -263,7 +263,7 @@ fig8.update_traces(
     },
     hovertemplate= "Country: %{label}<br>No. Movies: %{value}"
 )
-iplot(fig8)
+st.plotly_chart(fig8)
 
 
 filt = df["score"].nlargest(10)
@@ -290,7 +290,7 @@ fig9.update_traces(
     },
     hovertemplate= "Movie: %{y}<br>Rate: %{x}"
 )
-iplot(fig9)
+st.plotly_chart(fig9)
 
 
 gross_per_year = df.groupby("year")["gross"].mean()
@@ -317,7 +317,7 @@ fig10.update_traces(
     },
     hovertemplate= "Year: %{x}<br>AVG Gross: %{y:0.2s}"
 )
-iplot(fig10)
+st.plotly_chart(fig10)
 
 
 gross_via_comapny = df.groupby("company")["gross"].mean().sort_values(ascending=False)
@@ -347,7 +347,7 @@ fig11.update_traces(
     },
     hovertemplate= "Movie Company: %{y}<br>AVG Gross Revnue: %{x:0.3s}"
 )
-iplot(fig11)
+st.plotly_chart(fig11)
 
 
 filt = (df["year"] >= 2010) & (df["year"] <= 2019)
@@ -378,7 +378,7 @@ fig12.update_traces(
     },
     hovertemplate= "Year: %{x}<br>Frequency: %{y}"
 )
-iplot(fig12)
+st.plotly_chart(fig12)
 
 
 
@@ -405,7 +405,7 @@ fig14.update_traces(
     },
     hovertemplate= "Budget: %{x:0.3s}<br>Gross Revenue: %{y:0.3s}"
 )
-iplot(fig14)
+st.plotly_chart(fig14)
 
 
 fig15 = px.scatter(
@@ -429,6 +429,6 @@ fig15.update_traces(
     },
     hovertemplate= "Votes: %{x:0.4s}<br>Gross Revenue: %{y:0.4s}"
 )
-iplot(fig15)
+st.plotly_chart(fig15)
 
 
