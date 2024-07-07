@@ -10,3 +10,4 @@ st.markdown('''<p style="font-weight:bold; font-size: 20px; font-family:cursive"
             Market Trends: Studying box office revenues, audience demographics, and viewing habits to identify popular genres, emerging trends, and audience preferences.
             Financial Performance: Analyzing box office sales, production budgets, marketing costs, and profitability of films to assess financial success and industry health.
             Production and Distribution: Examining production trends, studio strategies, distribution channels (theatrical, streaming, etc.), and international markets to understand how films are made and distributed globally</p>''',unsafe_allow_html=True)
+st.markdown("kasjdhsuidj")
